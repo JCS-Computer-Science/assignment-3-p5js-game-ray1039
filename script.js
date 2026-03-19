@@ -12,6 +12,9 @@ let player = {
     sizeY: 30,
     velX: 6,
     velY: 6,
+    hp: 20,
+    def: 1,
+    atk: 20
 }
 
 let buttonX = 130;
@@ -57,10 +60,28 @@ let uiButtons = [
 
 let textBox = [
     fightText = {
-        enemies: ["Froggit"]
+        enemies: [
+            froggit = {
+                enemyName: "froggit",
+                enemyHp: 50,
+                enemyDef: 2,
+                enemyAtk: 3,
+                selected: false
+            }
+        ]
     },
     actText = {
-        actions: ["Check", "Flirt"]
+        actions: [
+            check = {
+                actionName: "Check",
+                selected: false
+            },
+            flirt = {
+                actionName: "Flirt",
+                selected: false,
+                txt: "Froggit didn't understand what you said, but was flattered anyway."
+            }
+        ]
     },
     itemText = [
         monsterCandy = {
@@ -69,7 +90,16 @@ let textBox = [
         }
     ],
     mercyText = {
-        mercyTxt: ["Spare", "Run"]
+        mercyTxt: [
+            spare = {
+                txt: "Spare",
+                selected: false
+            },
+            run = {
+                txt: "run",
+                selected: false
+            }
+        ]
     }
 ]
 
