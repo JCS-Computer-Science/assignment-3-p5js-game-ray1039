@@ -27,7 +27,8 @@ let uiButtons = [
         isSelected: true,
         text: "FIGHT",
         textX: 17,
-        g: 100
+        g: 100,
+        id: 0
     },
     actButton = {
         sizeX: buttonX,
@@ -36,7 +37,8 @@ let uiButtons = [
         isSelected: false,
         text: "ACT",
         textX: 35,
-        g: 100
+        g: 100,
+        id: 1
     },
     itemButton = {
         sizeX: buttonX,
@@ -45,7 +47,8 @@ let uiButtons = [
         isSelected: false,
         text: "ITEM",
         textX: 27,
-        g: 100
+        g: 100,
+        id: 2
     },
     mercyButton = {
         sizeX: buttonX,
@@ -54,56 +57,45 @@ let uiButtons = [
         isSelected: false,
         text: "MERCY",
         textX: 8,
-        g: 100
+        g: 100,
+        id: 3
     }
 ]
 
+//this is for all the textbox stuff
 let textBox = [
-    fightText = {
-        enemies: [
-            froggit = {
-                enemyName: "froggit",
-                enemyHp: 50,
-                enemyDef: 2,
-                enemyAtk: 3,
-                selected: false
-            }
-        ]
-    },
-    actText = {
-        actions: [
-            check = {
-                actionName: "Check",
-                selected: false
-            },
-            flirt = {
-                actionName: "Flirt",
-                selected: false,
-                txt: "Froggit didn't understand what you said, but was flattered anyway."
-            }
-        ]
-    },
+    fightText = [
+        froggit = {
+            name: "froggit",
+            enemyHp: 50,
+            enemyDef: 2,
+            enemyAtk: 3,
+            selected: false
+        }
+    ],
+    actText = [
+        check = {
+            name: "Check",
+            selected: false
+        }
+
+    ],
     itemText = [
         monsterCandy = {
-            itemName: "Monster candy",
+            name: "Monster candy",
             hpRestore: 10
         }
     ],
-    mercyText = {
-        mercyTxt: [
-            spare = {
-                txt: "Spare",
-                selected: false
-            },
-            run = {
-                txt: "run",
-                selected: false
-            }
-        ]
-    }
+    mercyText = [
+        spare = {
+            name: "Spare",
+            selected: false
+        },
+    ]
 ]
 
-let inBattle = false
+let inBattle = false;
+let inUI = false;
 let buttonSel = 0;
 
 
@@ -120,6 +112,9 @@ function draw() {
         drawButtons();
     } else {
         drawPlayer();
+    }
+    if (inUI) {
+        boxText();
     }
 }
 
@@ -160,6 +155,9 @@ function drawButtons() {
         fill(255, uiButtons[i].g, 0);
         noStroke();
         text(uiButtons[i].text, canvasX / 16 * uiButtons[i].addPos + uiButtons[i].textX, canvasY / 1.045);
+        if (uiButtons[i].isSelected == true && key === "z") {
+            inUI = true;
+        }
     }
 
 }
@@ -196,6 +194,16 @@ function keyPressed() {
 
 function boxText() {
 
+    for (let i = 0; i < uiButtons.length; i++) {
+        if (uiButtons[i].isSelected == true) {
+            let select = uiButtons[i];
+            for (let i = 0; i < textBox.length; i++) {
+                if (textBox[i] == select) {
+
+                }
+            }
+        }
+    }
 }
 
 function movement() {
@@ -232,3 +240,4 @@ function colisionCheckBorder() {
         player.posY = battleBox.posY;
     }
 }
+
