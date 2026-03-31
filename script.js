@@ -1,5 +1,5 @@
 //spaget code
-import { fightText } from "./textBox.js";
+//import { fightText } from "./textBox.js";
 
 let canvasX = 800;
 let canvasY = 600;
@@ -17,7 +17,11 @@ let player = {
     velY: 6,
     hp: 20,
     def: 1,
-    atk: 20
+    atk: 20,
+    candy: {
+        name: "Monster Candy",
+        hpRestore: 10
+    }
 }
 
 let buttonX = 130;
@@ -29,7 +33,7 @@ let uiButtons = [
         addPos: 1,
         isSelected: true,
         text: "FIGHT",
-        textX: 17,
+        textX: 15,
         g: 100,
         id: 0
     },
@@ -39,7 +43,7 @@ let uiButtons = [
         addPos: 4.8,
         isSelected: false,
         text: "ACT",
-        textX: 35,
+        textX: 37,
         g: 100,
         id: 1
     },
@@ -49,7 +53,7 @@ let uiButtons = [
         addPos: 8.6,
         isSelected: false,
         text: "ITEM",
-        textX: 27,
+        textX: 23,
         g: 100,
         id: 2
     },
@@ -59,13 +63,13 @@ let uiButtons = [
         addPos: 12.4,
         isSelected: false,
         text: "MERCY",
-        textX: 8,
+        textX: 15,
         g: 100,
         id: 3
     }
 ]
 
-export let enemy = {
+let enemy = {
     name: "Papyrus",
     hp: 1000,
     dmg: 3,
@@ -75,9 +79,15 @@ let inBattle = false;
 let inUI = false;
 let buttonSel = 0;
 
+/** This function loads resources that will be used later. */
+function preload() {
+    font = loadFont('./Determination Mono Web/DeterminationMonoWebRegular.ttf');
+}
+
 
 function setup() {
     createCanvas(canvasX, canvasY);
+    textFont(font);
 }
 
 function draw() {
@@ -90,9 +100,7 @@ function draw() {
     } else {
         drawPlayer();
     }
-    if (inUI) {
-        boxText();
-    }
+    boxText();
 }
 
 function drawPlayer() {
@@ -128,13 +136,12 @@ function drawButtons() {
         strokeWeight(4);
         stroke(255, uiButtons[i].g, 0);
         rect(canvasX / 16 * uiButtons[i].addPos, canvasY / 1.135, uiButtons[i].sizeX, uiButtons[i].sizeY);
-        textSize(32);
+        textSize(40);
         fill(255, uiButtons[i].g, 0);
         noStroke();
         text(uiButtons[i].text, canvasX / 16 * uiButtons[i].addPos + uiButtons[i].textX, canvasY / 1.045);
         if (uiButtons[i].isSelected == true && key === "z") {
             inUI = true;
-            console.log("pressed: " + inUI);
         } else if (uiButtons[i].isSelected == true && key === "x") {
             inUI = false;
         }
@@ -174,15 +181,54 @@ function keyPressed() {
 
 function boxText() {
     for (let i = 0; i < uiButtons.length; i++) {
-        if (uiButtons[i].isSelected == true) {
-            let select = uiButtons[i];
-            for (let i = 0; i < textBox.length; i++) {
-                if (textBox[i] == select) {
-
-                }
+        if (uiButtons[0].isSelected == true && inUI) {
+            fill(255, 215, 0);
+            textSize(32);
+            text("*" + enemy.name, 60, 295);
+            if (key === "z") {
+                fightText();
+            }
+        } else if (uiButtons[1].isSelected == true && inUI) {
+            fill(255, 215, 0);
+            textSize(32);
+            text("*Check", 60, 295);
+            if (key === "z") {
+                actText();
+            }
+        } else if (uiButtons[2].isSelected == true && inUI) {
+            fill(255, 215, 0);
+            textSize(32);
+            text("*" + player.candy.name, 60, 295);
+            if (key === "z") {
+                itemText();
+            }
+        } else if (uiButtons[3].isSelected == true && inUI) {
+            fill(255, 215, 0);
+            textSize(32);
+            text("*Spare", 60, 295);
+            if (key === "z") {
+                mercyText();
             }
         }
     }
+}
+
+//this isn't the best way to do this but I cant make a seperate script for some reason
+function fightText() {
+
+}
+
+function actText() {
+    fill(255);
+    text("ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)", 60, 295);
+}
+
+function itemText() {
+
+}
+
+function mercyText() {
+
 }
 
 function movement() {
