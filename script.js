@@ -1,3 +1,6 @@
+//spaget code
+import { fightText } from "./textBox.js";
+
 let canvasX = 800;
 let canvasY = 600;
 let battleBox = {
@@ -62,37 +65,11 @@ let uiButtons = [
     }
 ]
 
-//this is for all the textbox stuff
-let textBox = [
-    fightText = [
-        froggit = {
-            name: "froggit",
-            enemyHp: 50,
-            enemyDef: 2,
-            enemyAtk: 3,
-            selected: false
-        }
-    ],
-    actText = [
-        check = {
-            name: "Check",
-            selected: false
-        }
-
-    ],
-    itemText = [
-        monsterCandy = {
-            name: "Monster candy",
-            hpRestore: 10
-        }
-    ],
-    mercyText = [
-        spare = {
-            name: "Spare",
-            selected: false
-        },
-    ]
-]
+export let enemy = {
+    name: "Papyrus",
+    hp: 1000,
+    dmg: 3,
+}
 
 let inBattle = false;
 let inUI = false;
@@ -157,6 +134,9 @@ function drawButtons() {
         text(uiButtons[i].text, canvasX / 16 * uiButtons[i].addPos + uiButtons[i].textX, canvasY / 1.045);
         if (uiButtons[i].isSelected == true && key === "z") {
             inUI = true;
+            console.log("pressed: " + inUI);
+        } else if (uiButtons[i].isSelected == true && key === "x") {
+            inUI = false;
         }
     }
 
@@ -164,10 +144,10 @@ function drawButtons() {
 
 function keyPressed() {
     if (!inBattle) {
-        if (keyIsDown(LEFT_ARROW)) {
+        if (keyIsDown(LEFT_ARROW) && !inUI) {
             buttonSel--
         }
-        if (keyIsDown(RIGHT_ARROW)) {
+        if (keyIsDown(RIGHT_ARROW) && !inUI) {
             buttonSel++
         }
 
@@ -177,13 +157,13 @@ function keyPressed() {
             buttonSel = 0
         }
 
-        if (keyIsDown(LEFT_ARROW)) {
+        if (keyIsDown(LEFT_ARROW) && !inUI) {
             uiButtons[buttonSel].isSelected = true
             if (uiButtons[buttonSel + 1].isSelected && buttonSel != -1) {
                 uiButtons[buttonSel + 1].isSelected = false
             }
         }
-        if (keyIsDown(RIGHT_ARROW)) {
+        if (keyIsDown(RIGHT_ARROW) && !inUI) {
             uiButtons[buttonSel].isSelected = true
             if (uiButtons[buttonSel - 1].isSelected && buttonSel != 4) {
                 uiButtons[buttonSel - 1].isSelected = false
@@ -193,7 +173,6 @@ function keyPressed() {
 }
 
 function boxText() {
-
     for (let i = 0; i < uiButtons.length; i++) {
         if (uiButtons[i].isSelected == true) {
             let select = uiButtons[i];
