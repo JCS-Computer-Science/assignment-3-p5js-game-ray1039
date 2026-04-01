@@ -1,5 +1,4 @@
 //spaget code
-//import { fightText } from "./textBox.js";
 
 let canvasX = 800;
 let canvasY = 600;
@@ -78,6 +77,7 @@ let enemy = {
 let inBattle = false;
 let inUI = false;
 let buttonSel = 0;
+let currentText;
 
 /** This function loads resources that will be used later. */
 function preload() {
@@ -102,6 +102,7 @@ function draw() {
     }
     boxText();
 }
+
 
 function drawPlayer() {
     fill(color(255, 0, 0))
@@ -184,29 +185,33 @@ function boxText() {
         if (uiButtons[0].isSelected == true && inUI) {
             fill(255, 215, 0);
             textSize(32);
-            text("*" + enemy.name, 60, 295);
-            if (key === "z") {
+            currentText = enemy.name;
+            text("*" + currentText, 60, 295);
+            if (keyIsDown(90) && uiButtons[0].isSelected && inUI) {
                 fightText();
             }
         } else if (uiButtons[1].isSelected == true && inUI) {
             fill(255, 215, 0);
             textSize(32);
-            text("*Check", 60, 295);
-            if (key === "z") {
+            currentText = "Check";
+            text("*" + currentText, 60, 295);
+            if (key === "z" && uiButtons[1].isSelected && inUI) {
                 actText();
             }
         } else if (uiButtons[2].isSelected == true && inUI) {
             fill(255, 215, 0);
             textSize(32);
-            text("*" + player.candy.name, 60, 295);
-            if (key === "z") {
+            currentText = player.candy.name;
+            text("*" + currentText, 60, 295);
+            if (keyIsDown(90) && uiButtons[2].isSelected && inUI) {
                 itemText();
             }
         } else if (uiButtons[3].isSelected == true && inUI) {
             fill(255, 215, 0);
             textSize(32);
-            text("*Spare", 60, 295);
-            if (key === "z") {
+            currentText = "Spare";
+            text("*" + currentText, 60, 295);
+            if (keyIsDown(90) && uiButtons[3].isSelected && inUI) {
                 mercyText();
             }
         }
@@ -220,7 +225,8 @@ function fightText() {
 
 function actText() {
     fill(255);
-    text("ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)", 60, 295);
+    currentText = "ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)"
+    text(currentText, 60, 295);
 }
 
 function itemText() {
