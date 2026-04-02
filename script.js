@@ -12,8 +12,8 @@ let player = {
     posY: battleBox.posY + 75,
     sizeX: 30,
     sizeY: 30,
-    velX: 6,
-    velY: 6,
+    velX: 3,
+    velY: 3,
     hp: 20,
     def: 1,
     atk: 20,
@@ -69,7 +69,7 @@ let uiButtons = [
 ]
 
 let enemy = {
-    name: "Papyrus",
+    name: "froggit",
     hp: 1000,
     dmg: 3,
 }
@@ -97,12 +97,14 @@ function draw() {
     colisionCheckBorder();
     if (!inBattle) {
         drawButtons();
+        boxText();
     } else {
         drawPlayer();
     }
-    boxText();
-}
+    text(currentText, 60, 295);
+    console.log(actUI);
 
+}
 
 function drawPlayer() {
     fill(color(255, 0, 0))
@@ -124,31 +126,7 @@ function drawBattleBox() {
     }
 }
 
-function drawButtons() {
-    for (let i = 0; i < uiButtons.length; i++) {
-        //console.log(buttonSel);
-        if (uiButtons[i].isSelected) {
-            uiButtons[i].g = 215;
-        }
-        if (uiButtons[i].isSelected == false) {
-            uiButtons[i].g = 100;
-        }
-        fill(0, 0, 0);
-        strokeWeight(4);
-        stroke(255, uiButtons[i].g, 0);
-        rect(canvasX / 16 * uiButtons[i].addPos, canvasY / 1.135, uiButtons[i].sizeX, uiButtons[i].sizeY);
-        textSize(40);
-        fill(255, uiButtons[i].g, 0);
-        noStroke();
-        text(uiButtons[i].text, canvasX / 16 * uiButtons[i].addPos + uiButtons[i].textX, canvasY / 1.045);
-        if (uiButtons[i].isSelected == true && key === "z") {
-            inUI = true;
-        } else if (uiButtons[i].isSelected == true && key === "x") {
-            inUI = false;
-        }
-    }
 
-}
 
 function keyPressed() {
     if (!inBattle) {
@@ -177,65 +155,22 @@ function keyPressed() {
                 uiButtons[buttonSel - 1].isSelected = false
             }
         }
-    }
-}
+        if (key === "z" && fightUI == true) {
+            fightText();
+        } else if (key === "z" && actUI == true) {
+            actText();
+            console.log("Pressed");
 
-function boxText() {
-    for (let i = 0; i < uiButtons.length; i++) {
-        if (uiButtons[0].isSelected == true && inUI) {
-            fill(255, 215, 0);
-            textSize(32);
-            currentText = enemy.name;
-            text("*" + currentText, 60, 295);
-            if (keyIsDown(90) && uiButtons[0].isSelected && inUI) {
-                fightText();
-            }
-        } else if (uiButtons[1].isSelected == true && inUI) {
-            fill(255, 215, 0);
-            textSize(32);
-            currentText = "Check";
-            text("*" + currentText, 60, 295);
-            if (key === "z" && uiButtons[1].isSelected && inUI) {
-                actText();
-            }
-        } else if (uiButtons[2].isSelected == true && inUI) {
-            fill(255, 215, 0);
-            textSize(32);
-            currentText = player.candy.name;
-            text("*" + currentText, 60, 295);
-            if (keyIsDown(90) && uiButtons[2].isSelected && inUI) {
-                itemText();
-            }
-        } else if (uiButtons[3].isSelected == true && inUI) {
-            fill(255, 215, 0);
-            textSize(32);
-            currentText = "Spare";
-            text("*" + currentText, 60, 295);
-            if (keyIsDown(90) && uiButtons[3].isSelected && inUI) {
-                mercyText();
-            }
+        } else if (key === "z" && itemUI == true) {
+            itemText();
+        } else if (key === "z" && mercyUI == true) {
+            mercyText();
         }
     }
 }
 
-//this isn't the best way to do this but I cant make a seperate script for some reason
-function fightText() {
 
-}
 
-function actText() {
-    fill(255);
-    currentText = "ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)"
-    text(currentText, 60, 295);
-}
-
-function itemText() {
-
-}
-
-function mercyText() {
-
-}
 
 function movement() {
     if (inBattle) {
@@ -270,5 +205,9 @@ function colisionCheckBorder() {
     if (player.posY <= battleBox.posY) {
         player.posY = battleBox.posY;
     }
+}
+
+function createAtk() {
+
 }
 
