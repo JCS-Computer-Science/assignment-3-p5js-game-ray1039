@@ -12,10 +12,10 @@ function boxText() {
             if (keyIsDown(90) && uiButtons[0].isSelected && inUI) {
                 fightUI = true;
             }
-        } else if (uiButtons[1].isSelected == true && inUI) {
+        } else if (uiButtons[1].isSelected == true && inUI && actUI == false) {
             fill(255, 215, 0);
             textSize(32);
-            currentText = "Check";
+            currentText = "*Check";
             if (keyIsDown(90) && uiButtons[1].isSelected && inUI) {
                 actUI = true;
             }
@@ -44,6 +44,7 @@ function fightText() {
 
 function actText() {
     fill(255);
+    textSize(32);
     currentText = "ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)";
 }
 
@@ -67,13 +68,14 @@ function drawButtons() {
         fill(0, 0, 0);
         strokeWeight(4);
         stroke(255, uiButtons[i].g, 0);
-        rect(canvasX / 16 * uiButtons[i].addPos, canvasY / 1.135, uiButtons[i].sizeX, uiButtons[i].sizeY);
+        rect(canvasX / 16 * uiButtons[i].addPos, canvasY / 1.07, uiButtons[i].sizeX, uiButtons[i].sizeY);
         textSize(40);
         fill(255, uiButtons[i].g, 0);
         noStroke();
         text(uiButtons[i].text, canvasX / 16 * uiButtons[i].addPos + uiButtons[i].textX, canvasY / 1.045);
         if (uiButtons[i].isSelected == true && key === "z") {
             inUI = true;
+            boxText();
         } else if (uiButtons[i].isSelected == true && key === "x") {
             inUI = false;
             fightUI = false;

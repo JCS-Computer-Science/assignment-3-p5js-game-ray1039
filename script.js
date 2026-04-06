@@ -5,11 +5,11 @@ let canvasY = 600;
 let battleBox = {
     sizeX: 700,
     sizeY: 200,
-    posY: canvasY / 2.3,
+    posY: canvasY / 1.7,
 }
 let player = {
-    posX: canvasX / 2 - 15,
-    posY: battleBox.posY + 75,
+    posX: canvasX / 2,
+    posY: battleBox.posY,
     sizeX: 30,
     sizeY: 30,
     velX: 3,
@@ -29,40 +29,40 @@ let uiButtons = [
     attackButton = {
         sizeX: buttonX,
         sizeY: buttonY,
-        addPos: 1,
+        addPos: 2.3,
         isSelected: true,
         text: "FIGHT",
-        textX: 15,
+        textX: -50,
         g: 100,
         id: 0
     },
     actButton = {
         sizeX: buttonX,
         sizeY: buttonY,
-        addPos: 4.8,
+        addPos: 6.1,
         isSelected: false,
         text: "ACT",
-        textX: 37,
+        textX: -30,
         g: 100,
         id: 1
     },
     itemButton = {
         sizeX: buttonX,
         sizeY: buttonY,
-        addPos: 8.6,
+        addPos: 9.95,
         isSelected: false,
         text: "ITEM",
-        textX: 23,
+        textX: -40,
         g: 100,
         id: 2
     },
     mercyButton = {
         sizeX: buttonX,
         sizeY: buttonY,
-        addPos: 12.4,
+        addPos: 13.7,
         isSelected: false,
         text: "MERCY",
-        textX: 15,
+        textX: -50,
         g: 100,
         id: 3
     }
@@ -88,6 +88,7 @@ function preload() {
 function setup() {
     createCanvas(canvasX, canvasY);
     textFont(font);
+    rectMode(CENTER);
 }
 
 function draw() {
@@ -97,7 +98,6 @@ function draw() {
     colisionCheckBorder();
     if (!inBattle) {
         drawButtons();
-        boxText();
     } else {
         drawPlayer();
     }
@@ -113,16 +113,15 @@ function drawPlayer() {
 }
 
 function drawBattleBox() {
-    let c = color(0, 0, 0)
-    fill(c);
+    fill(0);
     strokeWeight(5);
     stroke(255);
     if (!inBattle) {
         battleBox.sizeX = 700
-        rect(canvasX / 2 - battleBox.sizeX / 2, battleBox.posY, battleBox.sizeX, battleBox.sizeY);
+        rect(canvasX / 2, battleBox.posY, battleBox.sizeX, battleBox.sizeY);
     } else {
         battleBox.sizeX = 200;
-        rect(canvasX / 2 - battleBox.sizeX / 2, battleBox.posY, battleBox.sizeX, battleBox.sizeY);
+        rect(canvasX / 2, battleBox.posY, battleBox.sizeX, battleBox.sizeY);
     }
 }
 
@@ -159,8 +158,6 @@ function keyPressed() {
             fightText();
         } else if (key === "z" && actUI == true) {
             actText();
-            console.log("Pressed");
-
         } else if (key === "z" && itemUI == true) {
             itemText();
         } else if (key === "z" && mercyUI == true) {
@@ -193,21 +190,18 @@ function movement() {
 }
 
 function colisionCheckBorder() {
-    if (player.posX >= canvasX / 2 + battleBox.sizeX / 2 - player.sizeX) {
-        player.posX = canvasX / 2 + battleBox.sizeX / 2 - player.sizeX;
+    if (player.posX >= canvasX / 2 + battleBox.sizeX / 2 - player.sizeX / 2) {
+        player.posX = canvasX / 2 + battleBox.sizeX / 2 - player.sizeX / 2;
     }
-    if (player.posX <= canvasX / 2 - battleBox.sizeX / 2) {
-        player.posX = canvasX / 2 - battleBox.sizeX / 2;
+    if (player.posX <= canvasX / 2 - battleBox.sizeX / 2 + player.sizeX / 2) {
+        player.posX = canvasX / 2 - battleBox.sizeX / 2 + player.sizeX / 2;
     }
-    if (player.posY >= battleBox.posY + battleBox.sizeY - player.sizeY) {
-        player.posY = battleBox.posY + battleBox.sizeY - player.sizeY;
+    if (player.posY >= battleBox.posY + battleBox.sizeY / 2 - player.sizeY / 2) {
+        player.posY = battleBox.posY + battleBox.sizeY / 2 - player.sizeY / 2;
     }
-    if (player.posY <= battleBox.posY) {
-        player.posY = battleBox.posY;
+    if (player.posY <= battleBox.posY - battleBox.sizeY / 2 + player.sizeY / 2) {
+        player.posY = battleBox.posY - battleBox.sizeY / 2 + player.sizeY / 2;
     }
 }
 
-function createAtk() {
-
-}
 
