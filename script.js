@@ -101,9 +101,14 @@ function draw() {
     } else {
         drawPlayer();
     }
-    text(currentText, 60, 295);
-    console.log(actUI);
 
+    if (fightUI || actUI || itemUI || mercyUI) {
+        fill(255)
+    } else if (inUI) {
+        fill(255, 215, 0);
+    }
+    textSize(32);
+    text(currentText, 60, 295);
 }
 
 function drawPlayer() {
@@ -131,9 +136,15 @@ function keyPressed() {
     if (!inBattle) {
         if (keyIsDown(LEFT_ARROW) && !inUI) {
             buttonSel--
+            if (!inBattle) {
+                drawButtons();
+            }
         }
         if (keyIsDown(RIGHT_ARROW) && !inUI) {
             buttonSel++
+            if (!inBattle) {
+                drawButtons();
+            }
         }
 
         if (buttonSel >= 4) {
@@ -157,11 +168,34 @@ function keyPressed() {
         if (key === "z" && fightUI == true) {
             fightText();
         } else if (key === "z" && actUI == true) {
-            actText();
         } else if (key === "z" && itemUI == true) {
             itemText();
         } else if (key === "z" && mercyUI == true) {
             mercyText();
+        }
+        for (let i = 0; i < uiButtons.length; i++) {
+            if (uiButtons[0].isSelected == true && inUI) {
+                if (key === "z" && uiButtons[0].isSelected && inUI) {
+                    fightUI = true;
+                    break;
+                }
+            } else if (uiButtons[1].isSelected == true && inUI) {
+                if (key === "z" && uiButtons[1].isSelected && inUI) {
+                    actUI = true;
+                    actText();
+                    break;
+                }
+            } else if (uiButtons[2].isSelected == true && inUI) {
+                if (key === "z" && uiButtons[2].isSelected && inUI) {
+                    itemUI = true;
+                    break;
+                }
+            } else if (uiButtons[3].isSelected == true && inUI) {
+                if (key === "z" && uiButtons[3].isSelected && inUI) {
+                    mercyUI = true;
+                    break;
+                }
+            }
         }
     }
 }

@@ -6,33 +6,13 @@ let mercyUI = false;
 function boxText() {
     for (let i = 0; i < uiButtons.length; i++) {
         if (uiButtons[0].isSelected == true && inUI) {
-            fill(255, 215, 0);
-            textSize(32);
-            currentText = enemy.name;
-            if (keyIsDown(90) && uiButtons[0].isSelected && inUI) {
-                fightUI = true;
-            }
-        } else if (uiButtons[1].isSelected == true && inUI && actUI == false) {
-            fill(255, 215, 0);
-            textSize(32);
+            currentText = "*" + enemy.name;
+        } else if (uiButtons[1].isSelected == true && inUI && !actUI) {
             currentText = "*Check";
-            if (keyIsDown(90) && uiButtons[1].isSelected && inUI) {
-                actUI = true;
-            }
         } else if (uiButtons[2].isSelected == true && inUI) {
-            fill(255, 215, 0);
-            textSize(32);
-            currentText = player.candy.name;
-            if (keyIsDown(90) && uiButtons[2].isSelected && inUI) {
-                itemUI = true;
-            }
+            currentText = "*" + player.candy.name;
         } else if (uiButtons[3].isSelected == true && inUI) {
-            fill(255, 215, 0);
-            textSize(32);
-            currentText = "Spare";
-            if (keyIsDown(90) && uiButtons[3].isSelected && inUI) {
-                mercyUI = true;
-            }
+            currentText = "*Spare";
         }
     }
 }
@@ -46,6 +26,16 @@ function actText() {
     fill(255);
     textSize(32);
     currentText = "ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)";
+    setTimeout(function () {
+        currentText = "";
+        inBattle = true;
+        fightUI = false;
+        actUI = false;
+        itemUI = false;
+        fightUI = false;
+        inUI = false;
+        pickFight();
+    }, 2500)
 }
 
 function itemText() {
@@ -76,7 +66,7 @@ function drawButtons() {
         if (uiButtons[i].isSelected == true && key === "z") {
             inUI = true;
             boxText();
-        } else if (uiButtons[i].isSelected == true && key === "x") {
+        } else if (uiButtons[i].isSelected == true && key === "x" && inUI == true) {
             inUI = false;
             fightUI = false;
             actUI = false;
