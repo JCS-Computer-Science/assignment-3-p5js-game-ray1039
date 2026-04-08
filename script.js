@@ -76,6 +76,7 @@ let enemy = {
 
 let inBattle = false;
 let inUI = false;
+let disableUI = false;
 let buttonSel = 0;
 let currentText;
 
@@ -109,6 +110,21 @@ function draw() {
     }
     textSize(32);
     text(currentText, 60, 295);
+    if (inBattle) {
+
+        if (randomNum == 0) {
+            targetFlies();
+        } else if (randomNum == 1) {
+            flyParade();
+        }
+    }
+    if (!disableUI) {
+        fightUI = false;
+        actUI = false;
+        itemUI = false;
+        mercyUI = false;
+        inUI = false;
+    }
 }
 
 function drawPlayer() {
@@ -134,13 +150,13 @@ function drawBattleBox() {
 
 function keyPressed() {
     if (!inBattle) {
-        if (keyIsDown(LEFT_ARROW) && !inUI) {
+        if (keyIsDown(LEFT_ARROW) && !inUI && !disableUI) {
             buttonSel--
             if (!inBattle) {
                 drawButtons();
             }
         }
-        if (keyIsDown(RIGHT_ARROW) && !inUI) {
+        if (keyIsDown(RIGHT_ARROW) && !inUI && !disableUI) {
             buttonSel++
             if (!inBattle) {
                 drawButtons();

@@ -29,12 +29,11 @@ function actText() {
     setTimeout(function () {
         currentText = "";
         inBattle = true;
-        fightUI = false;
-        actUI = false;
-        itemUI = false;
-        fightUI = false;
-        inUI = false;
-        pickFight();
+        //randomNum = Math.round(random(0, 1));
+        randomNum = 1;
+        if (randomNum == 1) {
+            generateFlies()
+        }
     }, 2500)
 }
 
