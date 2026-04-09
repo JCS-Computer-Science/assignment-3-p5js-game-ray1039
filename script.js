@@ -103,7 +103,7 @@ function draw() {
         drawPlayer();
     }
 
-    if (fightUI || actUI || itemUI || mercyUI) {
+    if (fightUI && disableUI || actUI && disableUI || itemUI && disableUI || mercyUI && disableUI) {
         fill(255)
     } else if (inUI) {
         fill(255, 215, 0);
@@ -118,38 +118,14 @@ function draw() {
             flyParade();
         }
     }
-    if (!disableUI) {
-        fightUI = false;
-        actUI = false;
-        itemUI = false;
-        mercyUI = false;
-        inUI = false;
-    }
 }
 
-function drawPlayer() {
-    fill(color(255, 0, 0))
-    noStroke();
-    rect(player.posX, player.posY, player.sizeX, player.sizeY);
-}
-
-function drawBattleBox() {
-    fill(0);
-    strokeWeight(5);
-    stroke(255);
-    if (!inBattle) {
-        battleBox.sizeX = 700
-        rect(canvasX / 2, battleBox.posY, battleBox.sizeX, battleBox.sizeY);
-    } else {
-        battleBox.sizeX = 200;
-        rect(canvasX / 2, battleBox.posY, battleBox.sizeX, battleBox.sizeY);
-    }
-}
 
 
 
 function keyPressed() {
     if (!inBattle) {
+        //for the buttons to set them to different color
         if (keyIsDown(LEFT_ARROW) && !inUI && !disableUI) {
             buttonSel--
             if (!inBattle) {
@@ -163,6 +139,7 @@ function keyPressed() {
             }
         }
 
+        //checks to see if buttonsel is greater than 3 or less than 0
         if (buttonSel >= 4) {
             buttonSel = 3;
         } else if (buttonSel <= -1) {
@@ -181,14 +158,23 @@ function keyPressed() {
                 uiButtons[buttonSel - 1].isSelected = false
             }
         }
+
+        //this selects things in the text box
         if (key === "z" && fightUI == true) {
+            disableUI = true;
             fightText();
         } else if (key === "z" && actUI == true) {
+            disableUI = true;
+            actText();
         } else if (key === "z" && itemUI == true) {
+            disableUI = true;
             itemText();
         } else if (key === "z" && mercyUI == true) {
+            disableUI = true;
             mercyText();
         }
+
+        //this selects the button currently highlighted
         for (let i = 0; i < uiButtons.length; i++) {
             if (uiButtons[0].isSelected == true && inUI) {
                 if (key === "z" && uiButtons[0].isSelected && inUI) {
@@ -198,7 +184,6 @@ function keyPressed() {
             } else if (uiButtons[1].isSelected == true && inUI) {
                 if (key === "z" && uiButtons[1].isSelected && inUI) {
                     actUI = true;
-                    actText();
                     break;
                 }
             } else if (uiButtons[2].isSelected == true && inUI) {
@@ -212,6 +197,19 @@ function keyPressed() {
                     break;
                 }
             }
+            if (uiButtons[i].isSelected == true && key === "z") {
+                inUI = true;
+                boxText();
+                //this backs out of the textbox and allows for another button to be selected
+            } else if (uiButtons[i].isSelected == true && key === "x" && inUI && !disableUI) {
+                inUI = false;
+                fightUI = false;
+                actUI = false;
+                itemUI = false;
+                fightUI = false;
+                disableUI = false;
+                currentText = "";
+            }
         }
     }
 }
@@ -219,39 +217,6 @@ function keyPressed() {
 
 
 
-function movement() {
-    if (inBattle) {
-        if (keyIsDown(RIGHT_ARROW)) {
-            player.posX += player.velX;
-        }
 
-        if (keyIsDown(LEFT_ARROW)) {
-            player.posX -= player.velX;
-        }
-
-        if (keyIsDown(UP_ARROW)) {
-            player.posY -= player.velY;
-        }
-
-        if (keyIsDown(DOWN_ARROW)) {
-            player.posY += player.velY;
-        }
-    }
-}
-
-function colisionCheckBorder() {
-    if (player.posX >= canvasX / 2 + battleBox.sizeX / 2 - player.sizeX / 2) {
-        player.posX = canvasX / 2 + battleBox.sizeX / 2 - player.sizeX / 2;
-    }
-    if (player.posX <= canvasX / 2 - battleBox.sizeX / 2 + player.sizeX / 2) {
-        player.posX = canvasX / 2 - battleBox.sizeX / 2 + player.sizeX / 2;
-    }
-    if (player.posY >= battleBox.posY + battleBox.sizeY / 2 - player.sizeY / 2) {
-        player.posY = battleBox.posY + battleBox.sizeY / 2 - player.sizeY / 2;
-    }
-    if (player.posY <= battleBox.posY - battleBox.sizeY / 2 + player.sizeY / 2) {
-        player.posY = battleBox.posY - battleBox.sizeY / 2 + player.sizeY / 2;
-    }
-}
 
 
