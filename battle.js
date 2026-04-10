@@ -25,14 +25,14 @@ function drawBattleBox() {
 //this happens 5 times
 function targetFlies() {
     for (let i = 0; i < 5; i++) {
+        flies[i].targetX = player.posX;
+        flies[i].targetY = player.posY;
+        circle(flies[i].posX, flies[i].posY, 8);
         setTimeout(() => {
-            flies[i].targetX = player.posX
-            flies[i].targetY = player.posY
-            // if (flies.posX != flies.targetX && flies.posY != flies.targetY) {
-            //     posX += velX;
-            //     posY += velY;
-            // }
-            console.log(flies);
+            let originX = flies[i].posX - flies[i].targetX;
+            let originY = flies[i].posY - flies[i].targetY;
+            let path = Math.sqrt(originX * originX + originY * originY);
+            console.log(path);
         }, 1000);
     }
 }
@@ -41,13 +41,28 @@ function targetFlies() {
 function flyParade() {
     for (let i = 0; i < flies.length; i++) {
         flies[i].posY += flies[i].velY
-        console.log(flies[i].posY);
+        //console.log(flies[i].posY);
+        //console.log(player.posX);
         fill(255);
-        circle(flies[i].posX, flies[i].posY, 5);
+        circle(flies[i].posX, flies[i].posY, 8);
+        if (player.posX >= flies[i].posX - 4 && player.posX <= flies[i].posX + 4 && player.posY >= flies[i].posY - 4 && player.posY <= flies[i].posY + 4 && invuln == false) {
+            player.hp -= 3;
+            console.log("Hit!");
+            invuln = true
+            setTimeout(() => {
+                invuln = false;
+            }, 1000);
+        }
         setTimeout(() => {
             if (flies[0].posY >= battleBox.posY + 100) {
                 inBattle = false;
                 disableUI = false;
+                inUI = false;
+                fightUI = false;
+                actUI = false;
+                itemUI = false;
+                fightUI = false;
+                invuln = false;
             }
         }, 3000);
     }
@@ -61,8 +76,8 @@ function generateFlies() {
             flies.push(flies[i] = { posX: canvasX / 2 + random(-100, 100), posY: battleBox.posY - 100 - random(0, 400), velY: 1 });
         }
     } else if (randomNum == 0) {
-        for (let i = 0; i < 5; i++) {
-            flies.push(flies[i] = { posX: canvasX / 2, posY: battleBox.posY + 100, velX: 4, velY: 4 })
+        for (let i = 0; i < 4; i++) {
+            flies.push(flies[i] = { posX: canvasX / 2, posY: battleBox.posY - 100, velX: 4, velY: 4, targetX: 0, targetY: 0 })
         }
     }
 }

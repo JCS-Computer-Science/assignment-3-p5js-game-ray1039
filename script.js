@@ -75,6 +75,7 @@ let enemy = {
 }
 
 let inBattle = false;
+let invuln = false;
 let inUI = false;
 let disableUI = false;
 let buttonSel = 0;
@@ -111,7 +112,6 @@ function draw() {
     textSize(32);
     text(currentText, 60, 295);
     if (inBattle) {
-
         if (randomNum == 0) {
             targetFlies();
         } else if (randomNum == 1) {

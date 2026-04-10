@@ -26,13 +26,13 @@ function actText() {
     fill(255);
     textSize(32);
     currentText = "ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)";
-    console.log("debug log");
+    //console.log("debug log");
     setTimeout(function () {
         currentText = "";
         inBattle = true;
         //randomNum = Math.round(random(0, 1));
+        randomNum = 0;
         generateFlies();
-        randomNum = 1;
     }, 2500)
 }
 
