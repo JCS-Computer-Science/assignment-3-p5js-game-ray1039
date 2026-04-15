@@ -72,6 +72,7 @@ let enemy = {
     name: "froggit",
     hp: 1000,
     dmg: 3,
+    canSpare: false
 }
 
 let inBattle = false;

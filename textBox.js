@@ -19,7 +19,24 @@ function boxText() {
 
 
 function fightText() {
-
+    let x = 68;
+    fill(255);
+    rect(x, battleBox.posY, 20, battleBox.sizeY - 20)
+    // while (x <= 732) {
+    //     setTimeout(() => {
+    //         console.log(x);
+    //         x += 3;
+    //     }, 2500);
+    //     if (x > 732) {
+    //         break;
+    //     }
+    // }
+    setTimeout(function () {
+        currentText = "";
+        inBattle = true;
+        randomNum = Math.round(random(0, 1));
+        generateFlies();
+    }, 2500)
 }
 
 function actText() {
@@ -31,17 +48,36 @@ function actText() {
         currentText = "";
         inBattle = true;
         //randomNum = Math.round(random(0, 1));
-        randomNum = 0;
+        randomNum = 1;
         generateFlies();
     }, 2500)
 }
 
 function itemText() {
 
+    currentText = "healed " + player.candy.hpRestore;
+    setTimeout(function () {
+        currentText = "";
+        inBattle = true;
+        //randomNum = Math.round(random(0, 1));
+        randomNum = 0;
+        generateFlies();
+    }, 2500)
 }
 
 function mercyText() {
-
+    if (enemy.canSpare) {
+        currentText = "You win!"
+    } else {
+        currentText = "This enemy cannot be spared (yet)"
+    }
+    setTimeout(function () {
+        currentText = "";
+        inBattle = true;
+        //randomNum = Math.round(random(0, 1));
+        randomNum = 0;
+        generateFlies();
+    }, 2500)
 }
 
 function drawButtons() {
