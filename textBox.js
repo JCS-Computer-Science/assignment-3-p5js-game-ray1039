@@ -48,7 +48,7 @@ function actText() {
         currentText = "";
         inBattle = true;
         //randomNum = Math.round(random(0, 1));
-        randomNum = 1;
+        randomNum = 0;
         generateFlies();
     }, 2500)
 }

@@ -17,3 +17,11 @@ class Attack {
         }
     }
 }
+
+class Targeting extends Attack {
+    constructor(posX, posY, targetX, targetY) {
+        super(posX, posY);
+        this.targetX = targetX;
+        this.targetY = targetY;
+    }
+}

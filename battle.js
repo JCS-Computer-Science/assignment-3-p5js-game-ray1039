@@ -1,6 +1,8 @@
 let randomNum;
 let spawn;
 let move;
+let targetX;
+let targetY;
 let flies = [
 ];
 
@@ -27,24 +29,9 @@ function drawBattleBox() {
 //this happens 5 times
 function targetFlies() {
     for (let i = 0; i < 5; i++) {
-        console.log(flies[i].posX)
         circle(flies[i].posX, flies[i].posY, 8);
-        let move = setInterval(() => {
-            flies[i].posX = lerp(flies[i].posX, player.posX, 0.1);
-            flies[i].posY = lerp(flies[i].posY, player.posY, 0.1);
-        }, 1500);
-        flies[i].collision(player);
-        setTimeout(() => {
-            inBattle = false;
-            disableUI = false;
-            inUI = false;
-            fightUI = false;
-            actUI = false;
-            itemUI = false;
-            fightUI = false;
-            invuln = false;
-            clearInterval(move)
-        }, 5000);
+        flies[i].posX = lerp(flies[i].posX, targetX, 0.1);
+        flies[i].posY = lerp(flies[i].posY, targetY, 0.1);
     }
 }
 
@@ -56,20 +43,18 @@ function flyParade() {
         circle(flies[i].posX, flies[i].posY, 8);
         flies[i].collision(player);
         if (flies[i].posY >= battleBox.posY + 100) {
-            flies.splice(0, 1);
+            flies.splice(i, 1);
         }
         setTimeout(() => {
-            if (flies[0].posY >= battleBox.posY + 100) {
-                inBattle = false;
-                disableUI = false;
-                inUI = false;
-                fightUI = false;
-                actUI = false;
-                itemUI = false;
-                fightUI = false;
-                invuln = false;
-                clearInterval(spawn);
-            }
+            inBattle = false;
+            disableUI = false;
+            inUI = false;
+            fightUI = false;
+            actUI = false;
+            itemUI = false;
+            fightUI = false;
+            invuln = false;
+            clearInterval(spawn);
         }, 13000);
     }
 
@@ -85,11 +70,32 @@ function generateFlies() {
         }, 500);
 
     } else if (randomNum == 0) {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             let x = canvasX / 2;
             let y = battleBox.posY - 100;
-            flies.push(new Attack(x, y, 0, 0))
+            let delay = 30 + 1 * i;
+
+            flies.push(new Targeting(x, y, targetX, targetY))
+            move = setInterval(() => {
+                targetX = player.posX;
+                targetY = player.posY;
+                console.log(targetX);
+            }, 1500 + delay);
+            flies[i].collision(player);
         }
+
+        setTimeout(() => {
+            inBattle = false;
+            disableUI = false;
+            inUI = false;
+            fightUI = false;
+            actUI = false;
+            itemUI = false;
+            fightUI = false;
+            invuln = false;
+            clearInterval(move)
+        }, 7000);
+
     }
 }
 
