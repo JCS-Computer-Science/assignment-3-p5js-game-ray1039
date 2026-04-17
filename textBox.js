@@ -22,15 +22,11 @@ function fightText() {
     let x = 68;
     fill(255);
     rect(x, battleBox.posY, 20, battleBox.sizeY - 20)
-    // while (x <= 732) {
-    //     setTimeout(() => {
-    //         console.log(x);
-    //         x += 3;
-    //     }, 2500);
-    //     if (x > 732) {
-    //         break;
-    //     }
-    // }
+    currentText = "";
+    setTimeout(() => {
+        console.log(x);
+        x += 3;
+    }, 2500);
     setTimeout(function () {
         currentText = "";
         inBattle = true;
@@ -43,12 +39,10 @@ function actText() {
     fill(255);
     textSize(32);
     currentText = "ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)";
-    //console.log("debug log");
     setTimeout(function () {
         currentText = "";
         inBattle = true;
-        //randomNum = Math.round(random(0, 1));
-        randomNum = 0;
+        randomNum = Math.round(random(0, 1));
         generateFlies();
     }, 2500)
 }
@@ -56,11 +50,12 @@ function actText() {
 function itemText() {
 
     currentText = "healed " + player.candy.hpRestore;
+    player.hp += hpRestore;
+    hudDmg
     setTimeout(function () {
         currentText = "";
         inBattle = true;
-        //randomNum = Math.round(random(0, 1));
-        randomNum = 0;
+        randomNum = Math.round(random(0, 1));
         generateFlies();
     }, 2500)
 }
@@ -74,8 +69,7 @@ function mercyText() {
     setTimeout(function () {
         currentText = "";
         inBattle = true;
-        //randomNum = Math.round(random(0, 1));
-        randomNum = 0;
+        randomNum = Math.round(random(0, 1));
         generateFlies();
     }, 2500)
 }

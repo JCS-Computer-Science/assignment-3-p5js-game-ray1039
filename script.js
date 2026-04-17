@@ -71,7 +71,7 @@ let uiButtons = [
 let enemy = {
     name: "froggit",
     hp: 1000,
-    dmg: 3,
+    dmg: 4,
     canSpare: false
 }
 
@@ -92,6 +92,7 @@ function setup() {
     createCanvas(canvasX, canvasY);
     textFont(font);
     rectMode(CENTER);
+    imageMode(CENTER);
 }
 
 function draw() {
@@ -99,6 +100,7 @@ function draw() {
     drawBattleBox();
     movement();
     colisionCheckBorder();
+    drawHud();
     if (!inBattle) {
         drawButtons();
     } else {
@@ -121,8 +123,22 @@ function draw() {
     }
 }
 
-
-
+function drawHud() {
+    textSize(38);
+    noStroke();
+    fill(255);
+    text("LV 1", 190, 500);
+    text("Chara", 48, 500);
+    text(player.hp + " / 20", 440, 500);
+    textSize(32);
+    text("HP", 330, 500);
+    fill(255, 0, 0);
+    rect(400, 490, 50, 45);
+    rectMode(CORNER);
+    fill(255, 215, 0)
+    rect(375, 467, hudDmg, 45);
+    rectMode(CENTER);
+}
 
 function keyPressed() {
     if (!inBattle) {
