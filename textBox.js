@@ -2,15 +2,21 @@ let fightUI = false;
 let actUI = false;
 let itemUI = false;
 let mercyUI = false;
+let optionSelect = 0;
 
 function boxText() {
     for (let i = 0; i < uiButtons.length; i++) {
         if (uiButtons[0].isSelected == true && inUI) {
             currentText = "*" + enemy.name;
         } else if (uiButtons[1].isSelected == true && inUI) {
-            currentText = "*Check";
+            optionSelect = 0;
+            let arr = [
+                currentText = "*Check",
+                currentTextTwo = "*flirt",
+                currentTextThree = "*Threaten"
+            ]
         } else if (uiButtons[2].isSelected == true && inUI) {
-            currentText = "*" + player.candy.name;
+            currentText = "*" + player.item.name;
         } else if (uiButtons[3].isSelected == true && inUI) {
             currentText = "*Spare";
         }
@@ -29,6 +35,8 @@ function fightText() {
     }, 2500);
     setTimeout(function () {
         currentText = "";
+        currentTextTwo = "";
+        currentTextThree = "";
         inBattle = true;
         randomNum = Math.round(random(0, 1));
         generateFlies();
@@ -41,6 +49,8 @@ function actText() {
     currentText = "ATK: " + enemy.dmg + " DEF: (I can't be bothered :P)";
     setTimeout(function () {
         currentText = "";
+        currentTextTwo = "";
+        currentTextThree = "";
         inBattle = true;
         randomNum = Math.round(random(0, 1));
         generateFlies();
@@ -49,11 +59,21 @@ function actText() {
 
 function itemText() {
 
-    currentText = "healed " + player.candy.hpRestore;
-    player.hp += hpRestore;
-    hudDmg
+    currentText = "healed " + player.item.hpRestore + "HP.";
+    player.hp += player.item.hpRestore;
+    hudDmg += 25;
+    if (player.hp > 20) {
+        currentText = "HP maxed out.";
+        player.hp = 20;
+        if (hudDmg > 50) {
+            hudDmg = 50;
+        }
+    }
+
     setTimeout(function () {
         currentText = "";
+        currentTextTwo = "";
+        currentTextThree = "";
         inBattle = true;
         randomNum = Math.round(random(0, 1));
         generateFlies();
@@ -68,6 +88,8 @@ function mercyText() {
     }
     setTimeout(function () {
         currentText = "";
+        currentTextTwo = "";
+        currentTextThree = "";
         inBattle = true;
         randomNum = Math.round(random(0, 1));
         generateFlies();

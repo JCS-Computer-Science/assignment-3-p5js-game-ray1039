@@ -7,21 +7,8 @@ let battleBox = {
     sizeY: 200,
     posY: canvasY / 1.7,
 }
-let player = {
-    posX: canvasX / 2,
-    posY: battleBox.posY,
-    sizeX: 30,
-    sizeY: 30,
-    velX: 3,
-    velY: 3,
-    hp: 20,
-    def: 1,
-    atk: 20,
-    candy: {
-        name: "Monster Candy",
-        hpRestore: 10
-    }
-}
+
+let player = new Player(canvasX / 2, battleBox.posY, 30, 30, 3, 3, 20, 1, 20, { name: "Monster Candy", hpRestore: 10 });
 
 let buttonX = 130;
 let buttonY = 65;
@@ -81,6 +68,9 @@ let inUI = false;
 let disableUI = false;
 let buttonSel = 0;
 let currentText;
+let currentTextTwo;
+let currentTextThree;
+let hudDmg = 50;
 
 /** This function loads resources that will be used later. */
 function preload() {
@@ -98,8 +88,8 @@ function setup() {
 function draw() {
     background(0);
     drawBattleBox();
-    movement();
-    colisionCheckBorder();
+    player.movement();
+    player.colisionCheckBorder();
     drawHud();
     if (!inBattle) {
         drawButtons();
@@ -112,8 +102,11 @@ function draw() {
     } else if (inUI) {
         fill(255, 215, 0);
     }
+
     textSize(32);
     text(currentText, 60, 295);
+    text(currentTextTwo, 350, 295);
+    text(currentTextThree, 60, 355)
     if (inBattle) {
         if (randomNum == 0) {
             targetFlies();
@@ -121,8 +114,22 @@ function draw() {
             flyParade();
         }
     }
+
+    if (player.hp <= 0) {
+        fill(255, 0, 0)
+        rect(canvasX / 2, canvasY / 2, 1000, 1000)
+        inBattle = false;
+        disableUI = true;
+        inUI = false;
+        fightUI = false;
+        actUI = false;
+        itemUI = false;
+        fightUI = false;
+        invuln = false;
+    }
 }
 
+//draws the ui elements that display player name, hp, and lvl
 function drawHud() {
     textSize(38);
     noStroke();
@@ -176,6 +183,15 @@ function keyPressed() {
             }
         }
 
+        //a seperate part for selecting item inside the act menu
+        if (keyIsDown(LEFT_ARROW) && inUI && !disableUI && !actUI) {
+            optionSelect--
+        }
+        if (keyIsDown(RIGHT_ARROW) && inUI && !disableUI && !actUI) {
+            optionSelect++
+        }
+
+
         //this selects things in the text box
         if (key === "z" && fightUI == true) {
             disableUI = true;
@@ -226,6 +242,8 @@ function keyPressed() {
                 fightUI = false;
                 disableUI = false;
                 currentText = "";
+                currentTextTwo = "";
+                currentTextThree = "";
             }
         }
     }

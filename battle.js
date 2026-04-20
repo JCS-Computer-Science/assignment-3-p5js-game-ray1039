@@ -4,14 +4,13 @@ let move;
 let targetX = 0;
 let targetY = 0;
 let delay;
-let hudDmg = 50;
 let flies = [
 ];
 
 function drawPlayer() {
     fill(color(255, 0, 0))
     noStroke();
-    rect(player.posX, player.posY, player.sizeX, player.sizeY);
+    rect(player.x, player.y, player.sizeX, player.sizeY);
 }
 
 function drawBattleBox() {
@@ -81,9 +80,9 @@ function generateFlies() {
 
             flies.push(new Targeting(x, y, targetX, targetY))
             move = setInterval(() => {
-                targetX = player.posX;
-                targetY = player.posY;
-            }, 1000);
+                targetX = player.x;
+                targetY = player.y;
+            }, 1000 + delay);
         }
 
         setTimeout(() => {
@@ -99,42 +98,5 @@ function generateFlies() {
             randomNum = 2;
         }, 7000);
 
-    }
-}
-
-
-
-function movement() {
-    if (inBattle) {
-        if (keyIsDown(RIGHT_ARROW)) {
-            player.posX += player.velX;
-        }
-
-        if (keyIsDown(LEFT_ARROW)) {
-            player.posX -= player.velX;
-        }
-
-        if (keyIsDown(UP_ARROW)) {
-            player.posY -= player.velY;
-        }
-
-        if (keyIsDown(DOWN_ARROW)) {
-            player.posY += player.velY;
-        }
-    }
-}
-
-function colisionCheckBorder() {
-    if (player.posX >= canvasX / 2 + battleBox.sizeX / 2 - player.sizeX / 2) {
-        player.posX = canvasX / 2 + battleBox.sizeX / 2 - player.sizeX / 2;
-    }
-    if (player.posX <= canvasX / 2 - battleBox.sizeX / 2 + player.sizeX / 2) {
-        player.posX = canvasX / 2 - battleBox.sizeX / 2 + player.sizeX / 2;
-    }
-    if (player.posY >= battleBox.posY + battleBox.sizeY / 2 - player.sizeY / 2) {
-        player.posY = battleBox.posY + battleBox.sizeY / 2 - player.sizeY / 2;
-    }
-    if (player.posY <= battleBox.posY - battleBox.sizeY / 2 + player.sizeY / 2) {
-        player.posY = battleBox.posY - battleBox.sizeY / 2 + player.sizeY / 2;
     }
 }

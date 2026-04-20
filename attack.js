@@ -7,7 +7,7 @@ class Attack {
     }
 
     collision(player) {
-        if (player.posX >= this.posX - 11 & player.posX <= this.posX + 11 && player.posY >= this.posY - 11 && player.posY <= this.posY + 11 && invuln == false) {
+        if (player.x >= this.posX - 11 & player.x <= this.posX + 11 && player.y >= this.posY - 11 && player.y <= this.posY + 11 && invuln == false) {
             player.hp -= 4;
             hudDmg -= 10
             console.log("Hit!");
