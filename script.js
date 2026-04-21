@@ -12,6 +12,8 @@ let player = new Player(canvasX / 2, battleBox.posY, 30, 30, 3, 3, 20, 1, 20, { 
 
 let buttonX = 130;
 let buttonY = 65;
+
+let attackButton = new Button(buttonX, buttonY, 2.3, true, "FIGHT", -50, 100, 0);
 let uiButtons = [
     attackButton = {
         sizeX: buttonX,
@@ -71,6 +73,7 @@ let currentText;
 let currentTextTwo;
 let currentTextThree;
 let hudDmg = 50;
+let gameOver = true;
 
 /** This function loads resources that will be used later. */
 function preload() {
@@ -99,14 +102,29 @@ function draw() {
 
     if (fightUI && disableUI || actUI && disableUI || itemUI && disableUI || mercyUI && disableUI) {
         fill(255)
-    } else if (inUI) {
+    } else if (inUI && !actUI) {
         fill(255, 215, 0);
     }
 
     textSize(32);
+    if (arr[0].isSelected) {
+        fill(255, 215, 0);
+    } else {
+        fill(255)
+    }
     text(currentText, 60, 295);
+    if (arr[1].isSelected) {
+        fill(255, 215, 0);
+    } else {
+        fill(255)
+    }
     text(currentTextTwo, 350, 295);
-    text(currentTextThree, 60, 355)
+    if (arr[2].isSelected) {
+        fill(255, 215, 0);
+    } else {
+        fill(255)
+    }
+    text(currentTextThree, 60, 355);
     if (inBattle) {
         if (randomNum == 0) {
             targetFlies();
@@ -115,17 +133,10 @@ function draw() {
         }
     }
 
-    if (player.hp <= 0) {
-        fill(255, 0, 0)
-        rect(canvasX / 2, canvasY / 2, 1000, 1000)
-        inBattle = false;
-        disableUI = true;
-        inUI = false;
-        fightUI = false;
-        actUI = false;
-        itemUI = false;
-        fightUI = false;
-        invuln = false;
+
+
+    if (gameOver) {
+        gameEnd();
     }
 }
 
@@ -145,6 +156,23 @@ function drawHud() {
     fill(255, 215, 0)
     rect(375, 467, hudDmg, 45);
     rectMode(CENTER);
+}
+
+function gameEnd() {
+    inBattle = false;
+    disableUI = true;
+    inUI = false;
+    fightUI = false;
+    actUI = false;
+    itemUI = false;
+    fightUI = false;
+    invuln = false;
+    if (player.hp <= 0) {
+        fill(255, 0, 0)
+        rect(canvasX / 2, canvasY / 2, 1000, 1000)
+
+    }
+
 }
 
 function keyPressed() {
@@ -184,11 +212,30 @@ function keyPressed() {
         }
 
         //a seperate part for selecting item inside the act menu
-        if (keyIsDown(LEFT_ARROW) && inUI && !disableUI && !actUI) {
+        if (keyIsDown(LEFT_ARROW) && inUI && !disableUI && actUI) {
             optionSelect--
         }
-        if (keyIsDown(RIGHT_ARROW) && inUI && !disableUI && !actUI) {
+        if (keyIsDown(RIGHT_ARROW) && inUI && !disableUI && actUI) {
             optionSelect++
+        }
+
+        if (optionSelect >= 3) {
+            optionSelect = 2;
+        } else if (optionSelect <= -1) {
+            optionSelect = 0;
+        }
+
+        if (keyIsDown(LEFT_ARROW) && inUI && !disableUI && actUI) {
+            arr[optionSelect].isSelected = true
+            if (arr[optionSelect + 1].isSelected && optionSelect != -1) {
+                arr[optionSelect + 1].isSelected = false
+            }
+        }
+        if (keyIsDown(RIGHT_ARROW) && inUI && !disableUI && actUI) {
+            arr[optionSelect].isSelected = true
+            if (arr[optionSelect - 1].isSelected && optionSelect != 3) {
+                arr[optionSelect - 1].isSelected = false
+            }
         }
 
 
