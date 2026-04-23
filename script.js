@@ -62,6 +62,20 @@ function draw() {
         drawPlayer();
     }
 
+    if (enemy.canSpare && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
+        currentText = "Froggit seems reluctant to fight you";
+    } else if (flavourText == 1 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
+        currentText = "Froggit doesn't seem to know why it's here.";
+    } else if (flavourText == 2 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
+        currentText = "Froggit hops to and fro.";
+    } else if (flavourText == 3 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
+        currentText = "The battlefield is filled with the ";
+        currentTextThree = "smell of mustard seed.";
+    } else if (flavourText == 4 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
+        currentText = "You are intimidated by Froggit's ";
+        currentTextThree = "raw strength. Only kidding.";
+    }
+
     //textbox ui
     if (disableUI) {
         fill(255)
@@ -100,14 +114,14 @@ function draw() {
         }
     }
 
-    if (attacking) {
+    //attacking
+    if (attacking && !disableUI) {
         disableButtons = true;
         fill(255);
         rect(x, battleBox.posY, 20, battleBox.sizeY - 20)
         currentText = "";
         currentTextTwo = "";
         currentTextThree = "";
-        x += 5;
         if (x >= 736) {
             attacking = false;
             arr.currentText = "";
@@ -116,6 +130,13 @@ function draw() {
             inBattle = true;
             randomNum = Math.round(random(0, 1));
             generateFlies();
+        }
+        if (keyIsDown(90) && x >= 348 && x <= 388) {
+            attacking = false;
+            enemy.hp -= player.dmg;
+            drawFrames();
+        } else {
+            x += 5;
         }
     }
 
@@ -134,6 +155,31 @@ function draw() {
         fightUI = false;
         invuln = false;
     }
+}
+
+
+function drawFrames() {
+    disableUI = true;
+    rectMode(CORNER);
+    setTimeout(() => {
+        rect(canvasX / 2, 100, 50, 100);
+    }, 200);
+    setTimeout(() => {
+        rect(canvasX / 2, 100, 50, 200);
+    }, 400);
+    setTimeout(() => {
+        rect(canvasX / 2, 100, 50, 300);
+    }, 600);
+    setTimeout(() => {
+        rect(canvasX / 2, 100, 50, 400);
+    }, 800);
+    setTimeout(() => {
+        rect(canvasX / 2, 100, 50, 500);
+    }, 1000);
+    setTimeout(() => {
+        rect(canvasX / 2, 100, 50, 600);
+    }, 1200);
+    rectMode(CENTER);
 }
 
 
@@ -230,7 +276,6 @@ function keyPressed() {
 
         //this selects things in the text box
         if (key === "z" && fightUI == true) {
-            disableUI = true;
             uiButtons[buttonSel].isSelected = false;
             arr[optionSelect].isSelected = false;
             optionSelect = 0;

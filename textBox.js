@@ -106,8 +106,8 @@ function itemText() {
 function mercyText() {
     if (enemy.canSpare) {
         fill(255);
-        currentText = "You win!";
-        currentTextThree = "You got nothing because it does not affect the game."
+        currentText = "You win! You got nothing because ";
+        currentTextThree = "it does not affect the game."
         gameOver = true;
         disableButtons = true;
     } else {

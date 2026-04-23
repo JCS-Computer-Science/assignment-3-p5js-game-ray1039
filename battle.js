@@ -5,9 +5,14 @@ let targetX = 0;
 let targetY = 0;
 let delay;
 let flies = [];
+let flavourText;
 
 function drawPlayer() {
-    fill(color(255, 0, 0))
+    if (!invuln) {
+        fill(color(255, 0, 0))
+    } else {
+        fill(color(150, 0, 0))
+    }
     noStroke();
     rect(player.x, player.y, player.sizeX, player.sizeY);
 }
@@ -71,6 +76,7 @@ function generateFlies() {
             randomNum = 2;
             disableButtons = false;
             x = 68;
+            flavourText = Math.round(random(1, 4));
         }, 10000);
 
     } else if (randomNum == 0) {
@@ -83,6 +89,8 @@ function generateFlies() {
             move = setInterval(() => {
                 targetX = player.x;
                 targetY = player.y;
+                console.log(targetX);
+                console.log(targetY);
             }, 1000 + delay);
         }
 
@@ -99,6 +107,7 @@ function generateFlies() {
             randomNum = 2;
             disableButtons = false;
             x = 68;
+            flavourText = Math.round(random(1, 4));
         }, 7000);
     }
 }
