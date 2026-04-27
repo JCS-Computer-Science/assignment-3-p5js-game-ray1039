@@ -9,12 +9,11 @@ let flavourText;
 
 function drawPlayer() {
     if (!invuln) {
-        fill(color(255, 0, 0))
+        image(soulImg, player.x, player.y, player.sizeX, player.sizeY);
     } else {
-        fill(color(150, 0, 0))
+        image(soulHitImg, player.x, player.y, player.sizeX, player.sizeY);
     }
     noStroke();
-    rect(player.x, player.y, player.sizeX, player.sizeY);
 }
 
 function drawBattleBox() {
@@ -77,6 +76,8 @@ function generateFlies() {
             disableButtons = false;
             x = 68;
             flavourText = Math.round(random(1, 4));
+            currentFlavourText = "";
+            currentFlavourTextBottom = "";
         }, 10000);
 
     } else if (randomNum == 0) {
@@ -89,8 +90,6 @@ function generateFlies() {
             move = setInterval(() => {
                 targetX = player.x;
                 targetY = player.y;
-                console.log(targetX);
-                console.log(targetY);
             }, 1000 + delay);
         }
 
@@ -108,6 +107,8 @@ function generateFlies() {
             disableButtons = false;
             x = 68;
             flavourText = Math.round(random(1, 4));
+            currentFlavourText = "";
+            currentFlavourTextBottom = "";
         }, 7000);
     }
 }

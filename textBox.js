@@ -30,15 +30,23 @@ let arr = [
 function boxText() {
     for (let i = 0; i < uiButtons.length; i++) {
         if (uiButtons[0].isSelected == true && inUI) {
+            currentFlavourText = "";
+            currentFlavourTextBottom = "";
             currentText = "*" + enemy.name;
         } else if (uiButtons[1].isSelected == true && inUI && !disableUI) {
+            currentFlavourText = "";
+            currentFlavourTextBottom = "";
             optionSelect = 0;
             currentText = arr[0].currentText;
             currentTextTwo = arr[1].currentTextTwo;
             currentTextThree = arr[2].currentTextThree;
         } else if (uiButtons[2].isSelected == true && inUI) {
+            currentFlavourText = "";
+            currentFlavourTextBottom = "";
             currentText = "*" + player.item.name;
         } else if (uiButtons[3].isSelected == true && inUI) {
+            currentFlavourText = "";
+            currentFlavourTextBottom = "";
             currentText = "*Spare";
         }
     }
@@ -50,7 +58,8 @@ function actText() {
     textSize(32);
     if (optionSelect == 0) {
         fill(255);
-        currentText = "ATK: " + enemy.dmg + " DEF: 1";
+        currentText = "";
+        currentFlavourText = "ATK: " + enemy.dmg + " DEF: 1";
         currentTextThree = "";
     } else if (optionSelect == 1) {
         fill(255);
@@ -71,6 +80,8 @@ function actText() {
         currentTextThree = "";
         inBattle = true;
         randomNum = Math.round(random(0, 1));
+        currentFlavourText = "";
+        currentFlavourTextBottom = "";
         generateFlies();
     }, 2500)
 }
@@ -98,6 +109,8 @@ function itemText() {
         currentTextThree = "";
         inBattle = true;
         randomNum = Math.round(random(0, 1));
+        currentFlavourText = "";
+        currentFlavourTextBottom = "";
         generateFlies();
     }, 2500)
 }

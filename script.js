@@ -7,13 +7,19 @@ let battleBox = {
 }
 
 let player = new Player(canvasX / 2, battleBox.posY, 30, 30, 3, 3, 20, 1, 20, { name: "Monster Candy", hpRestore: 10 });
+let soulImg;
+let soulHitImg;
+let hitImg;
+
+let frogImg;
 let enemy = {
     name: "froggit",
-    hp: 1000,
+    hp: 100,
     dmg: 4,
     canSpare: false
 };
 
+let targetImg;
 
 let buttonX = 130;
 let buttonY = 65;
@@ -25,6 +31,8 @@ let invuln = false;
 let inUI = false;
 let disableUI = false;
 let buttonSel = 0;
+let currentFlavourText;
+let currentFlavourTextBottom;
 let currentText;
 let currentTextTwo;
 let currentTextThree;
@@ -35,6 +43,11 @@ let gameOver = false;
 /** This function loads resources that will be used later. */
 function preload() {
     font = loadFont('./Determination Mono Web/DeterminationMonoWebRegular.ttf');
+    frogImg = loadImage('gameassets/Froggit.png');
+    soulImg = loadImage('gameassets/Soul.png');
+    soulHitImg = loadImage('gameassets/SoulHit.png');
+    targetImg = loadImage('gameassets/Target.png');
+    hitImg = loadImage("gameassets/empty.png");
 }
 
 
@@ -47,7 +60,7 @@ function setup() {
     uiButtons.push(new Button(buttonX, buttonY, 6.1, false, "ACT", -30, 100, 1));
     uiButtons.push(new Button(buttonX, buttonY, 9.95, false, "ITEM", -40, 100, 2));
     uiButtons.push(new Button(buttonX, buttonY, 13.7, false, "MERCY", -50, 100, 3));
-    currentText = "Froggit hopped close!"
+    currentFlavourText = "*Froggit hopped close!"
 }
 
 function draw() {
@@ -62,49 +75,62 @@ function draw() {
         drawPlayer();
     }
 
+    image(frogImg, canvasX / 2, 170, 150, 150);
+
     if (enemy.canSpare && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
-        currentText = "Froggit seems reluctant to fight you";
+        currentFlavourText = "*Froggit seems reluctant to fight you";
     } else if (flavourText == 1 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
-        currentText = "Froggit doesn't seem to know why it's here.";
+        currentFlavourText = "*Froggit doesn't seem to know why it's here.";
     } else if (flavourText == 2 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
-        currentText = "Froggit hops to and fro.";
+        currentFlavourText = "*Froggit hops to and fro.";
     } else if (flavourText == 3 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
-        currentText = "The battlefield is filled with the ";
-        currentTextThree = "smell of mustard seed.";
+        currentFlavourText = "*The battlefield is filled with the ";
+        currentFlavourTextBottom = "smell of mustard seed.";
     } else if (flavourText == 4 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
-        currentText = "You are intimidated by Froggit's ";
-        currentTextThree = "raw strength. Only kidding.";
+        currentFlavourText = "*You are intimidated by Froggit's ";
+        currentFlavourTextBottom = "raw strength. Only kidding.";
     }
 
     //textbox ui
     if (disableUI) {
         fill(255)
     } else if (inUI && !actUI) {
-        fill(255, 215, 0);
+        image(soulImg, 80, 285, player.sizeX - 5, player.sizeY - 5);
+        fill(255);
     }
+
 
     //textbox ui selection
     textSize(32);
     if (arr[0].isSelected && !disableUI && actUI) {
-        fill(255, 215, 0);
+        fill(255);
+        text(currentText, 100, 295);
+        image(soulImg, 80, 285, player.sizeX - 5, player.sizeY - 5);
     } else {
         fill(255);
+        text(currentText, 100, 295);
+        text(currentFlavourText, 60, 295);
+        text(currentFlavourTextBottom, 60, 355);
     }
-    text(currentText, 60, 295);
+
 
     if (arr[1].isSelected && !disableUI && actUI) {
-        fill(255, 215, 0);
+        fill(255);
+        text(currentTextTwo, 370, 295);
+        image(soulImg, 350, 285, player.sizeX - 5, player.sizeY - 5);
     } else {
         fill(255)
+        text(currentTextTwo, 370, 295);
     }
-    text(currentTextTwo, 350, 295);
 
     if (arr[2].isSelected && !disableUI && actUI) {
-        fill(255, 215, 0);
+        fill(255);
+        image(soulImg, 80, 345, player.sizeX - 5, player.sizeY - 5);
+        text(currentTextThree, 100, 355);
     } else {
         fill(255)
+        text(currentTextThree, 100, 355);
     }
-    text(currentTextThree, 60, 355);
 
     if (inBattle) {
         if (randomNum == 0) {
@@ -118,27 +144,24 @@ function draw() {
     if (attacking && !disableUI) {
         disableButtons = true;
         fill(255);
+        image(targetImg, canvasX / 2, 350, 562 * 1.25, 128 * 1.6)
         rect(x, battleBox.posY, 20, battleBox.sizeY - 20)
         currentText = "";
         currentTextTwo = "";
         currentTextThree = "";
-        if (x >= 736) {
-            attacking = false;
-            arr.currentText = "";
-            arr.currentTextTwo = "";
-            arr.currentTextThree = "";
-            inBattle = true;
-            randomNum = Math.round(random(0, 1));
-            generateFlies();
-        }
-        if (keyIsDown(90) && x >= 348 && x <= 388) {
-            attacking = false;
-            enemy.hp -= player.dmg;
-            drawFrames();
-        } else {
-            x += 5;
-        }
+        x += 5;
     }
+    if (x >= 736) {
+        attacking = false;
+        arr.currentText = "";
+        arr.currentTextTwo = "";
+        arr.currentTextThree = "";
+        inBattle = true;
+        randomNum = Math.round(random(0, 1));
+        generateFlies();
+    }
+
+    image(hitImg, canvasX / 2, 150, 26 * 1.5, 110 * 1.7);
 
     //gameover
     if (player.hp <= 0) {
@@ -160,26 +183,35 @@ function draw() {
 
 function drawFrames() {
     disableUI = true;
-    rectMode(CORNER);
     setTimeout(() => {
-        rect(canvasX / 2, 100, 50, 100);
+        hitImg = loadImage('gameassets/hit_frame1.png');
+    }, 100);
+    setTimeout(() => {
+        hitImg = loadImage('gameassets/hit_frame2.png');
     }, 200);
     setTimeout(() => {
-        rect(canvasX / 2, 100, 50, 200);
+        hitImg = loadImage('gameassets/hit_frame3.png');
+    }, 300);
+    setTimeout(() => {
+        hitImg = loadImage('gameassets/hit_frame4.png');
     }, 400);
     setTimeout(() => {
-        rect(canvasX / 2, 100, 50, 300);
+        hitImg = loadImage('gameassets/hit_frame5.png');
+    }, 500);
+    setTimeout(() => {
+        hitImg = loadImage('gameassets/hit_frame6.png');
     }, 600);
     setTimeout(() => {
-        rect(canvasX / 2, 100, 50, 400);
-    }, 800);
-    setTimeout(() => {
-        rect(canvasX / 2, 100, 50, 500);
-    }, 1000);
-    setTimeout(() => {
-        rect(canvasX / 2, 100, 50, 600);
-    }, 1200);
-    rectMode(CENTER);
+        hitImg = loadImage('gameassets/empty.png');
+    }, 700);
+    setTimeout(function () {
+        currentText = "";
+        currentTextTwo = "";
+        currentTextThree = "";
+        inBattle = true;
+        randomNum = Math.round(random(0, 1));
+        generateFlies();
+    }, 2500)
 }
 
 
@@ -301,8 +333,6 @@ function keyPressed() {
             buttonSel = 0;
             uiButtons[buttonSel].isSelected = true;
             arr[optionSelect].isSelected = true;
-        } else if (key === "z" && mercyUI == true) {
-
         }
 
         //this selects the button currently highlighted
@@ -351,5 +381,24 @@ function keyPressed() {
                 currentTextThree = "";
             }
         }
+    }
+    if (keyIsDown(90) && x >= 390 && x <= 410) {
+        attacking = false;
+        enemy.hp -= player.atk;
+        fill(255);
+        text(player.atk, canvasX / 2, 100);
+        drawFrames();
+    } else if (keyIsDown(90) && x >= 145 && x <= 260 || keyIsDown(90) && x >= 535 && x <= 650) {
+        attacking = false;
+        enemy.hp -= Math.round(player.atk / 1.3);
+        drawFrames();
+    } else if (keyIsDown(90) && x >= 261 && x <= 398 || keyIsDown(90) && x >= 411 && x <= 534) {
+        attacking = false;
+        enemy.hp -= Math.round(player.atk / 1.5);
+        drawFrames();
+    } else if (keyIsDown(90) && x >= 80 && x <= 145 || keyIsDown(90) && x >= 650 && x <= 736) {
+        attacking = false;
+        enemy.hp -= Math.round(player.atk / 1.8);
+        drawFrames();
     }
 }
