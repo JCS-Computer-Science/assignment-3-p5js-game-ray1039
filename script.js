@@ -21,9 +21,17 @@ let enemy = {
 
 let targetImg;
 
-let buttonX = 130;
+let buttonX = 140;
 let buttonY = 65;
 let uiButtons = [];
+let fightImg;
+let actImg;
+let itemImg;
+let mercyImg;
+let fightSelImg;
+let actSelImg;
+let itemSelImg;
+let mercySelImg;
 
 
 let inBattle = false;
@@ -48,6 +56,14 @@ function preload() {
     soulHitImg = loadImage('gameassets/SoulHit.png');
     targetImg = loadImage('gameassets/Target.png');
     hitImg = loadImage("gameassets/empty.png");
+    fightImg = loadImage('gameassets/fight_unselected.png');
+    actImg = loadImage('gameassets/act_unselected.png');
+    itemImg = loadImage('gameassets/item_unselected.png');
+    mercyImg = loadImage('gameassets/mercy_unselected.png');
+    fightSelImg = loadImage('gameassets/fight_selected.png');
+    actSelImg = loadImage('gameassets/act_selected.png');
+    itemSelImg = loadImage('gameassets/item_selected.png');
+    mercySelImg = loadImage('gameassets/mercy_selected.png');
 }
 
 
@@ -56,10 +72,10 @@ function setup() {
     textFont(font);
     rectMode(CENTER);
     imageMode(CENTER);
-    uiButtons.push(new Button(buttonX, buttonY, 2.3, true, "FIGHT", -50, 100, 0));
-    uiButtons.push(new Button(buttonX, buttonY, 6.1, false, "ACT", -30, 100, 1));
-    uiButtons.push(new Button(buttonX, buttonY, 9.95, false, "ITEM", -40, 100, 2));
-    uiButtons.push(new Button(buttonX, buttonY, 13.7, false, "MERCY", -50, 100, 3));
+    uiButtons.push(new Button(buttonX, buttonY, 2.3, true, fightImg, fightSelImg, fightImg, 0));
+    uiButtons.push(new Button(buttonX, buttonY, 6.1, false, actImg, actSelImg, actImg, 1));
+    uiButtons.push(new Button(buttonX, buttonY, 9.95, false, itemImg, itemSelImg, itemImg, 2));
+    uiButtons.push(new Button(buttonX, buttonY, 13.7, false, mercyImg, mercySelImg, mercyImg, 3));
     currentFlavourText = "*Froggit hopped close!"
 }
 
@@ -100,12 +116,16 @@ function draw() {
     }
 
 
+
     //textbox ui selection
     textSize(32);
-    if (arr[0].isSelected && !disableUI && actUI) {
+    if (arr[0].isSelected && !disableUI && actUI && !enemy.canSpare) {
         fill(255);
         text(currentText, 100, 295);
         image(soulImg, 80, 285, player.sizeX - 5, player.sizeY - 5);
+    } else if (enemy.canSpare && !disableUI && !actUI && !fightUI && !itemUI) {
+        fill(255, 215, 0)
+        text(currentText, 100, 295)
     } else {
         fill(255);
         text(currentText, 100, 295);
@@ -113,7 +133,8 @@ function draw() {
         text(currentFlavourTextBottom, 60, 355);
     }
 
-
+    fill(255, 0, 0)
+    rect(480, 286, 100, 28);
     if (arr[1].isSelected && !disableUI && actUI) {
         fill(255);
         text(currentTextTwo, 370, 295);
@@ -139,6 +160,7 @@ function draw() {
             flyParade();
         }
     }
+
 
     //attacking
     if (attacking && !disableUI) {
@@ -385,7 +407,6 @@ function keyPressed() {
     if (keyIsDown(90) && x >= 390 && x <= 410) {
         attacking = false;
         enemy.hp -= player.atk;
-        fill(255);
         text(player.atk, canvasX / 2, 100);
         drawFrames();
     } else if (keyIsDown(90) && x >= 145 && x <= 260 || keyIsDown(90) && x >= 535 && x <= 650) {

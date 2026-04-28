@@ -1,12 +1,12 @@
 class Button {
-    constructor(sizeX, sizeY, addPos, isSelected, text, textX, g, id) {
+    constructor(sizeX, sizeY, addPos, isSelected, img, imgSel, imgUnsel, id) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.addPos = addPos;
         this.isSelected = isSelected;
-        this.text = text;
-        this.textX = textX;
-        this.g = g;
+        this.img = img;
+        this.imgSel = imgSel;
+        this.imgUnsel = imgUnsel;
         this.id = id;
     }
 }

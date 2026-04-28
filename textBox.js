@@ -33,6 +33,8 @@ function boxText() {
             currentFlavourText = "";
             currentFlavourTextBottom = "";
             currentText = "*" + enemy.name;
+            fill(255, 0, 0)
+            rect(400, 200, 100, 30);
         } else if (uiButtons[1].isSelected == true && inUI && !disableUI) {
             currentFlavourText = "";
             currentFlavourTextBottom = "";
@@ -59,17 +61,21 @@ function actText() {
     if (optionSelect == 0) {
         fill(255);
         currentText = "";
-        currentFlavourText = "ATK: " + enemy.dmg + " DEF: 1";
         currentTextThree = "";
+        currentFlavourText = "*ATK: " + enemy.dmg + " DEF: 1";
     } else if (optionSelect == 1) {
         fill(255);
-        currentText = "Froggit didn't understand what you said,";
-        currentTextThree = "but was flattered anyway.";
+        currentText = "";
+        currentTextThree = "";
+        currentFlavourText = "*Froggit didn't understand what you said,";
+        currentFlavourTextBottom = "but was flattered anyway.";
         enemy.canSpare = true;
     } else if (optionSelect == 2) {
         fill(255);
-        currentText = "Froggit didn't understand what you said,";
-        currentTextThree = "but was scared anyway.";
+        currentText = "";
+        currentTextThree = "";
+        currentFlavourText = "*Froggit didn't understand what you said,";
+        currentFlavourTextBottom = "but was scared anyway.";
         enemy.canSpare = true;
     }
     currentTextTwo = "";
@@ -89,13 +95,14 @@ function actText() {
 
 function itemText() {
 
-    currentText = "healed " + player.item.hpRestore + "HP.";
+    currentText = "";
+    currentFlavourText = "healed " + player.item.hpRestore + "HP.";
     currentTextTwo = "";
     currentTextThree = "";
     player.hp += player.item.hpRestore;
     hudDmg += 25;
     if (player.hp > 20) {
-        currentText = "HP maxed out.";
+        currentFlavourText = "*HP maxed out.";
         player.hp = 20;
         if (hudDmg > 50) {
             hudDmg = 50;
@@ -119,20 +126,27 @@ function itemText() {
 function mercyText() {
     if (enemy.canSpare) {
         fill(255);
-        currentText = "You win! You got nothing because ";
-        currentTextThree = "it does not affect the game."
+        currentText = "";
+        currentTextThree = "";
+        currentFlavourText = "*You win! You got nothing because ";
+        currentFlavourTextBottom = "it does not affect the game."
         gameOver = true;
         disableButtons = true;
     } else {
         disableButtons = true
         fill(255);
-        currentText = "This enemy cannot be spared yet"
+        currentText = "";
+        currentTextThree = "";
+        currentFlavourText = "*You can only spare when the name ";
+        currentFlavourTextBottom = "is yellow.";
         setTimeout(function () {
             currentText = "";
             currentTextTwo = "";
             currentTextThree = "";
             inBattle = true;
             randomNum = Math.round(random(0, 1));
+            currentFlavourText = "";
+            currentFlavourTextBottom = "";
             generateFlies();
         }, 2500)
     }
@@ -143,22 +157,17 @@ function mercyText() {
 function drawButtons() {
     if (!disableButtons) {
         for (let i = 0; i < uiButtons.length; i++) {
-            if (uiButtons[i].isSelected) {
-                uiButtons[i].g = 215;
-            }
-            if (uiButtons[i].isSelected == false) {
-                uiButtons[i].g = 100;
-            }
-
-
-            fill(0, 0, 0);
-            strokeWeight(4);
-            stroke(255, uiButtons[i].g, 0);
-            rect(canvasX / 16 * uiButtons[i].addPos, canvasY / 1.07, uiButtons[i].sizeX, uiButtons[i].sizeY);
-            textSize(40);
-            fill(255, uiButtons[i].g, 0);
+            image(uiButtons[i].img, canvasX / 16 * uiButtons[i].addPos, canvasY / 1.07, uiButtons[i].sizeX, uiButtons[i].sizeY);
             noStroke();
-            text(uiButtons[i].text, canvasX / 16 * uiButtons[i].addPos + uiButtons[i].textX, canvasY / 1.045);
+            if (uiButtons[i].isSelected) {
+                uiButtons[i].img = uiButtons[i].imgSel;
+                if (!inUI) {
+                    image(soulImg, canvasX / 16 * uiButtons[i].addPos - 48, canvasY / 1.07, player.sizeX - 3, player.sizeY - 3);
+                }
+            }
+            if (!uiButtons[i].isSelected) {
+                uiButtons[i].img = uiButtons[i].imgUnsel;
+            }
         }
     }
 
