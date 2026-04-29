@@ -1,5 +1,5 @@
 class Button {
-    constructor(sizeX, sizeY, addPos, isSelected, img, imgSel, imgUnsel, id) {
+    constructor(sizeX, sizeY, addPos, isSelected, img, imgSel, imgUnsel) {
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.addPos = addPos;
@@ -7,6 +7,5 @@ class Button {
         this.img = img;
         this.imgSel = imgSel;
         this.imgUnsel = imgUnsel;
-        this.id = id;
     }
 }

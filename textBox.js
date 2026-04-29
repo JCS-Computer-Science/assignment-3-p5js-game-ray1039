@@ -33,8 +33,6 @@ function boxText() {
             currentFlavourText = "";
             currentFlavourTextBottom = "";
             currentText = "*" + enemy.name;
-            fill(255, 0, 0)
-            rect(400, 200, 100, 30);
         } else if (uiButtons[1].isSelected == true && inUI && !disableUI) {
             currentFlavourText = "";
             currentFlavourTextBottom = "";

@@ -1,5 +1,7 @@
-let canvasX = 800;
-let canvasY = 600;
+const buttonX = 140;
+const buttonY = 65;
+const canvasX = 800;
+const canvasY = 600;
 let battleBox = {
     sizeX: 700,
     sizeY: 200,
@@ -12,6 +14,8 @@ let soulHitImg;
 let hitImg;
 
 let frogImg;
+let frogHitImg;
+let frogCurrent;
 let enemy = {
     name: "froggit",
     hp: 100,
@@ -21,8 +25,7 @@ let enemy = {
 
 let targetImg;
 
-let buttonX = 140;
-let buttonY = 65;
+
 let uiButtons = [];
 let fightImg;
 let actImg;
@@ -45,7 +48,9 @@ let currentText;
 let currentTextTwo;
 let currentTextThree;
 let hudDmg = 50;
+let hitText;
 let gameOver = false;
+let hitActive = false;
 
 
 /** This function loads resources that will be used later. */
@@ -64,6 +69,7 @@ function preload() {
     actSelImg = loadImage('gameassets/act_selected.png');
     itemSelImg = loadImage('gameassets/item_selected.png');
     mercySelImg = loadImage('gameassets/mercy_selected.png');
+    frogHitImg = loadImage('gameassets/Froggit.png');
 }
 
 
@@ -72,11 +78,12 @@ function setup() {
     textFont(font);
     rectMode(CENTER);
     imageMode(CENTER);
-    uiButtons.push(new Button(buttonX, buttonY, 2.3, true, fightImg, fightSelImg, fightImg, 0));
-    uiButtons.push(new Button(buttonX, buttonY, 6.1, false, actImg, actSelImg, actImg, 1));
-    uiButtons.push(new Button(buttonX, buttonY, 9.95, false, itemImg, itemSelImg, itemImg, 2));
-    uiButtons.push(new Button(buttonX, buttonY, 13.7, false, mercyImg, mercySelImg, mercyImg, 3));
+    uiButtons.push(new Button(buttonX, buttonY, 2.3, true, fightImg, fightSelImg, fightImg));
+    uiButtons.push(new Button(buttonX, buttonY, 6.1, false, actImg, actSelImg, actImg));
+    uiButtons.push(new Button(buttonX, buttonY, 9.95, false, itemImg, itemSelImg, itemImg));
+    uiButtons.push(new Button(buttonX, buttonY, 13.7, false, mercyImg, mercySelImg, mercyImg));
     currentFlavourText = "*Froggit hopped close!"
+    frogCurrent = frogImg;
 }
 
 function draw() {
@@ -91,8 +98,8 @@ function draw() {
         drawPlayer();
     }
 
-    image(frogImg, canvasX / 2, 170, 150, 150);
 
+    image(frogCurrent, canvasX / 2, 170, 150, 150);
     if (enemy.canSpare && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
         currentFlavourText = "*Froggit seems reluctant to fight you";
     } else if (flavourText == 1 && !fightUI && !actUI && !itemUI && !mercyUI && !inUI && !gameOver) {
@@ -110,11 +117,10 @@ function draw() {
     //textbox ui
     if (disableUI) {
         fill(255)
-    } else if (inUI && !actUI) {
+    } else if (inUI && !actUI && !attacking) {
         image(soulImg, 80, 285, player.sizeX - 5, player.sizeY - 5);
         fill(255);
     }
-
 
 
     //textbox ui selection
@@ -133,8 +139,6 @@ function draw() {
         text(currentFlavourTextBottom, 60, 355);
     }
 
-    fill(255, 0, 0)
-    rect(480, 286, 100, 28);
     if (arr[1].isSelected && !disableUI && actUI) {
         fill(255);
         text(currentTextTwo, 370, 295);
@@ -200,6 +204,22 @@ function draw() {
         fightUI = false;
         invuln = false;
     }
+    if (enemy.hp <= 0) {
+        fill(255);
+        currentText = "";
+        currentTextThree = "";
+        currentFlavourText = "*You win! You got nothing because ";
+        currentFlavourTextBottom = "it does not affect the game."
+        gameOver = true;
+        disableButtons = true;
+    }
+
+    if (hitActive) {
+        fill(0);
+        stroke(255, 0, 0)
+        textSize(40);
+        text(hitText, 400, 100);
+    }
 }
 
 
@@ -225,6 +245,7 @@ function drawFrames() {
     }, 600);
     setTimeout(() => {
         hitImg = loadImage('gameassets/empty.png');
+        frogCurrent = frogHitImg;
     }, 700);
     setTimeout(function () {
         currentText = "";
@@ -232,6 +253,7 @@ function drawFrames() {
         currentTextThree = "";
         inBattle = true;
         randomNum = Math.round(random(0, 1));
+        hitActive = false;
         generateFlies();
     }, 2500)
 }
@@ -404,22 +426,38 @@ function keyPressed() {
             }
         }
     }
-    if (keyIsDown(90) && x >= 390 && x <= 410) {
+    if (keyIsDown(90) && x >= 390 && x <= 410 && !disableUI) {
         attacking = false;
         enemy.hp -= player.atk;
-        text(player.atk, canvasX / 2, 100);
+        hitText = player.atk;
+        setTimeout(() => {
+            text(player.atk, canvasX / 2, 100);
+            hitActive = true;
+        }, 800);
         drawFrames();
-    } else if (keyIsDown(90) && x >= 145 && x <= 260 || keyIsDown(90) && x >= 535 && x <= 650) {
-        attacking = false;
-        enemy.hp -= Math.round(player.atk / 1.3);
-        drawFrames();
-    } else if (keyIsDown(90) && x >= 261 && x <= 398 || keyIsDown(90) && x >= 411 && x <= 534) {
+    } else if (keyIsDown(90) && x >= 145 && x <= 260 && !disableUI || keyIsDown(90) && x >= 535 && x <= 650 && !disableUI) {
         attacking = false;
         enemy.hp -= Math.round(player.atk / 1.5);
+        setTimeout(() => {
+            hitText = Math.round(player.atk / 1.5);
+            hitActive = true;
+        }, 800);
         drawFrames();
-    } else if (keyIsDown(90) && x >= 80 && x <= 145 || keyIsDown(90) && x >= 650 && x <= 736) {
+    } else if (keyIsDown(90) && x >= 261 && x <= 398 && !disableUI || keyIsDown(90) && x >= 411 && x <= 534 && !disableUI) {
+        attacking = false;
+        enemy.hp -= Math.round(player.atk / 1.3);
+        setTimeout(() => {
+            hitText = Math.round(player.atk / 1.3);
+            hitActive = true;
+        }, 800);
+        drawFrames();
+    } else if (keyIsDown(90) && x >= 80 && x <= 145 && !disableUI || keyIsDown(90) && x >= 650 && x <= 736 && !disableUI) {
         attacking = false;
         enemy.hp -= Math.round(player.atk / 1.8);
+        setTimeout(() => {
+            hitText = Math.round(player.atk / 1.8);
+            hitActive = true;
+        }, 800);
         drawFrames();
     }
 }
