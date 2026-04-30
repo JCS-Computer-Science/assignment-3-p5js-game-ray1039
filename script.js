@@ -18,7 +18,7 @@ let frogHitImg;
 let frogCurrent;
 let enemy = {
     name: "froggit",
-    hp: 100,
+    hp: 40,
     dmg: 4,
     canSpare: false
 };
@@ -429,32 +429,32 @@ function keyPressed() {
     if (keyIsDown(90) && x >= 390 && x <= 410 && !disableUI) {
         attacking = false;
         enemy.hp -= player.atk;
-        hitText = player.atk;
         setTimeout(() => {
+            hitText = player.atk;
             text(player.atk, canvasX / 2, 100);
             hitActive = true;
         }, 800);
         drawFrames();
     } else if (keyIsDown(90) && x >= 145 && x <= 260 && !disableUI || keyIsDown(90) && x >= 535 && x <= 650 && !disableUI) {
         attacking = false;
-        enemy.hp -= Math.round(player.atk / 1.5);
         setTimeout(() => {
+            enemy.hp -= Math.round(player.atk / 1.5);
             hitText = Math.round(player.atk / 1.5);
             hitActive = true;
         }, 800);
         drawFrames();
     } else if (keyIsDown(90) && x >= 261 && x <= 398 && !disableUI || keyIsDown(90) && x >= 411 && x <= 534 && !disableUI) {
         attacking = false;
-        enemy.hp -= Math.round(player.atk / 1.3);
         setTimeout(() => {
+            enemy.hp -= Math.round(player.atk / 1.3);
             hitText = Math.round(player.atk / 1.3);
             hitActive = true;
         }, 800);
         drawFrames();
     } else if (keyIsDown(90) && x >= 80 && x <= 145 && !disableUI || keyIsDown(90) && x >= 650 && x <= 736 && !disableUI) {
         attacking = false;
-        enemy.hp -= Math.round(player.atk / 1.8);
         setTimeout(() => {
+            enemy.hp -= Math.round(player.atk / 1.8);
             hitText = Math.round(player.atk / 1.8);
             hitActive = true;
         }, 800);
